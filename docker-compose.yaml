@@ -1,0 +1,12 @@
+version: "2"
+services:
+  webserver: 
+    container_name: webserver
+    image: nginx:latest
+
+  volume:
+    - ./nginx.conf:/etc/nginx/ngnix.conf
+  expose:
+    - "80"
+  ports:
+    -80:80
