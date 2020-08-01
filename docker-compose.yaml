@@ -5,6 +5,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ../mysite:/usr/share/nginx/html
     expose: 
       - "80"
     ports: 
