@@ -10,3 +10,74 @@ services:
       - "80"
     ports: 
       - "80:80"
+    networks:
+      inner:
+        aliases:
+          - webserver
+  expressapp:
+    container_name: expressapp
+    build:
+      context: ./expressapp
+      dockerfile: Dockerfile
+    volumes: 
+      - ./expressapp:/usr/src/app
+    environment: 
+      PORT: 80
+    expose: 
+      - 80
+    ports:
+      - "3000:80"
+    networks:
+      inner:
+        aliases:
+          - expressapp
+  exampleapi:
+    container_name: exampleapi
+    build:
+      context: ./exampleapi
+      dockerfile: Dockerfile
+    volumes: 
+      - ./exampleapi:/usr/src/app
+    environment: 
+      PORT: 80
+    expose: 
+      - 80
+    ports:
+      - "2000:80"
+    networks:
+      inner:
+        aliases:
+          - exampleapi
+  mysqlserver:
+    container_name: mysqlserver
+    image: mysql:latest
+    environment: 
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: testdb
+    expose:
+      - "3306"
+    volumes: 
+      - ./mysqldata:/var/lib/mysql
+    networks:
+      inner:
+        aliases:
+          - mysqlserver
+  myadmin:
+    container_name: myadmin
+    image: phpmyadmin/phpmyadmin
+    expose: 
+      - 80
+    ports: 
+      - "4000:80"
+    environment: 
+      PMA_USER: root
+      PMA_PASSWORD: toor
+      PMA_HOST: mysqlserver
+    networks:
+      inner:
+        aliases:
+          - myadmin
+networks:
+  inner: {}
